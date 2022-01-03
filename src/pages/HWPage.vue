@@ -12,6 +12,9 @@ export default {
   name: 'HWPage',
   components: {
     HelloWorld
+  },
+  meta: {
+    title: 'Vue HelloWorld'
   }
 }
 </script>

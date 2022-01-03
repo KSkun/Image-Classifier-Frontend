@@ -14,6 +14,10 @@ const App = {
     },
 
     render () {
+        // support specified page title
+        if (this.ViewComponent.meta.title) {
+            document.title = this.ViewComponent.meta.title
+        }
         return h(this.ViewComponent)
     },
 
