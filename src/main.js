@@ -3,7 +3,8 @@ import routes from './routes'
 import {createRouter, createWebHashHistory} from 'vue-router';
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
-import App from './App';
+import * as Icons from '@element-plus/icons-vue'
+import App from '@/App'
 
 const router = createRouter({
     history: createWebHashHistory(),
@@ -11,6 +12,14 @@ const router = createRouter({
 })
 
 const app = createApp(App)
+
+Object.keys(Icons).forEach(key => {
+    if (key === 'Menu') { // work around for menu icon
+        app.component('icon-menu', Icons[key])
+    } else {
+        app.component(key, Icons[key])
+    }
+})
 
 app.use(router)
 app.use(ElementPlus)

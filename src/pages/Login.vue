@@ -25,9 +25,6 @@ import {ElMessage} from "element-plus";
 
 export default {
   name: "Login",
-  metaInfo: {
-    title: '登录'
-  },
   data() {
     return {
       form: {
@@ -50,14 +47,13 @@ export default {
   mounted() {
     document.title = '登录 - ' + appName
 
-    if (localStorage.tokenExpire < Date.now()) {
+    if (parseFloat(localStorage.tokenExpire) * 1000 < Date.now()) {
       localStorage.removeItem('token')
       localStorage.removeItem('tokenExpire')
       localStorage.login = false
     }
 
-    if (localStorage.login === true) {
-      ElMessage.success('已登录')
+    if (localStorage.login === 'true') {
       this.$router.push('/')
     }
   },
