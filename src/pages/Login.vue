@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-form ref="loginForm" :model="form" :rules="rules" label-width="80px" class="login-box">
-      <h3 class="login-title">快速文本/非文本分类系统</h3>
+      <h3 class="login-title">{{ appName }}</h3>
       <el-form-item label="用户名" prop="username">
         <el-input type="text" placeholder="" v-model="form.username"/>
       </el-form-item>
@@ -16,8 +16,16 @@
 </template>
 
 <script>
+import axios from "axios";
+import {appName, urlPrefix} from "@/App";
+import {Base64} from "js-base64";
+import {ElMessage} from "element-plus";
+
 export default {
   name: "Login",
+  metaInfo: {
+    title: '登录'
+  },
   data() {
     return {
       form: {
@@ -33,13 +41,53 @@ export default {
           {required: true, message: '请输入密码', trigger: 'blur'}
         ]
       },
+
+      appName: appName,
+    }
+  },
+  mounted() {
+    document.title = '登录 - ' + appName
+
+    if (localStorage.tokenExpire < Date.now()) {
+      localStorage.removeItem('token')
+      localStorage.removeItem('tokenExpire')
+      localStorage.login = false
+    }
+
+    if (localStorage.login === true) {
+      ElMessage.success('已登录')
+      this.$router.push('/')
     }
   },
   methods: {
-    onSubmit(formName) {
-      this.$refs[formName].validate((valid) => {
+    onSubmit: function (formName) {
+      const form = this.$refs[formName];
+      form.validate(valid => {
         if (valid) {
-          this.$router.push("/main");
+          axios.get(urlPrefix + '/api/user/token', {
+            params: {
+              username: form.model.username,
+              password: Base64.encode(form.model.password)
+            }
+          }).then(response => {
+            if (!response.data.success) {
+              ElMessage.error(response.statusText + ': ' + response.data.error)
+            }
+
+            const token = response.data.data.token, expire_at = response.data.data.expire_at
+            localStorage.login = true
+            localStorage.token = token
+            localStorage.tokenExpire = expire_at
+            ElMessage.success('登录成功')
+
+            this.$router.push('/')
+          }).catch(error => {
+            let errorMessage = error.message;
+            if (error.response.data.success && error.response.data.success === false) {
+              errorMessage = error.response.data.error
+            }
+            ElMessage.error(error.response.statusText + ': ' + errorMessage)
+          })
         } else {
           return false;
         }
