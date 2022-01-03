@@ -1,31 +1,18 @@
-import { createApp, h } from 'vue'
+import {createApp} from 'vue'
 import routes from './routes'
+import {createRouter, createWebHashHistory} from "vue-router";
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+import App from "./App";
 
-const App = {
-    data: () => ({
-        currentRoute: window.location.pathname
-    }),
+const router = createRouter({
+    history: createWebHashHistory(),
+    routes: routes,
+})
 
-    computed: {
-        ViewComponent () {
-            const matchingPage = routes[this.currentRoute] || '404'
-            return require(`./pages/${matchingPage}.vue`).default
-        }
-    },
+const app = createApp(App)
 
-    render () {
-        // support specified page title
-        if (this.ViewComponent.meta.title) {
-            document.title = this.ViewComponent.meta.title
-        }
-        return h(this.ViewComponent)
-    },
+app.use(router);
+app.use(ElementPlus);
 
-    created () {
-        window.addEventListener('popstate', () => {
-            this.currentRoute = window.location.pathname
-        })
-    }
-}
-
-createApp(App).mount('#app')
+app.mount('#app')
