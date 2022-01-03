@@ -3,10 +3,12 @@
     <el-form ref="loginForm" :model="form" :rules="rules" label-width="80px" class="login-box">
       <h3 class="login-title">{{ appName }}</h3>
       <el-form-item label="用户名" prop="username">
-        <el-input type="text" placeholder="" v-model="form.username"/>
+        <el-input type="text" placeholder="" v-model="form.username"
+                  @keyup.enter="onSubmit('loginForm')"/>
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input type="password" placeholder="" v-model="form.password"/>
+        <el-input type="password" placeholder="" v-model="form.password"
+                  @keyup.enter="onSubmit('loginForm')"/>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" v-on:click="onSubmit('loginForm')">登录</el-button>
@@ -82,11 +84,11 @@ export default {
 
             this.$router.push('/')
           }).catch(error => {
-            let errorMessage = error.message;
-            if (error.response.data.success && error.response.data.success === false) {
+            let errorMessage = error.response.statusText + ': ' + error.message;
+            if (error.response.data.success === false) {
               errorMessage = error.response.data.error
             }
-            ElMessage.error(error.response.statusText + ': ' + errorMessage)
+            ElMessage.error(errorMessage)
           })
         } else {
           return false;
