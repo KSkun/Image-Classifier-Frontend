@@ -6,14 +6,18 @@
         <el-col :span="12" style="text-align: right">
           <el-dropdown>
             <span class="el-dropdown-link">
+              <el-icon><avatar/></el-icon>
               {{ username }}
-              <el-icon>
-                <arrow-down/>
-              </el-icon>
+              <el-icon><arrow-down/></el-icon>
             </span>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item v-on:click="onLogout()">注销</el-dropdown-item>
+                <el-dropdown-item v-on:click="onLogout()">
+                  <el-icon>
+                    <back/>
+                  </el-icon>
+                  注销
+                </el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
