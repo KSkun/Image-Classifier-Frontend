@@ -3,7 +3,21 @@
     <el-header>
       <el-row>
         <el-col :span="12"><b>{{ appName + ' by KSkun' }}</b></el-col>
-        <el-col :span="12" style="text-align: right">username</el-col>
+        <el-col :span="12" style="text-align: right">
+          <el-dropdown>
+            <span class="el-dropdown-link">
+              {{ username }}
+              <el-icon>
+                <arrow-down/>
+              </el-icon>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item v-on:click="onLogout()">注销</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </el-col>
       </el-row>
     </el-header>
     <el-container>
@@ -57,7 +71,8 @@ export default {
   name: "Home",
   data() {
     return {
-      appName: appName
+      appName: appName,
+      username: localStorage.username,
     }
   },
   computed: {
@@ -71,10 +86,21 @@ export default {
     if (parseFloat(localStorage.tokenExpire) * 1000 < Date.now()) {
       localStorage.removeItem('token')
       localStorage.removeItem('tokenExpire')
+      localStorage.removeItem('username')
       localStorage.login = false
     }
 
     if (!localStorage.login || localStorage.login === 'false') {
+      this.$router.push('/login')
+    }
+  },
+  methods: {
+    onLogout() {
+      localStorage.removeItem('token')
+      localStorage.removeItem('tokenExpire')
+      localStorage.removeItem('username')
+      localStorage.login = false
+
       this.$router.push('/login')
     }
   }

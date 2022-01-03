@@ -76,6 +76,7 @@ export default {
             localStorage.login = true
             localStorage.token = token
             localStorage.tokenExpire = expire_at
+            localStorage.username = form.model.username
             ElMessage.success('登录成功')
 
             this.$router.push('/')
