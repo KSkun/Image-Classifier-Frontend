@@ -83,7 +83,7 @@ export default {
           }).catch(error => {
             let errorMessage
             if (!error.response) {
-              errorMessage = 'api network error'
+              errorMessage = error.message
             } else {
               errorMessage = error.response.statusText + ': ' + error.message;
               if (error.response.data.success === false) {
