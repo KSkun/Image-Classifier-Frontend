@@ -28,7 +28,7 @@
       <el-aside width="300px" style="background-color: rgb(238, 241, 246)">
         <el-scrollbar>
           <el-menu :default-openeds="['1', '2']" default-active="1">
-            <el-menu-item index="1">
+            <el-menu-item index="1" v-on:click="currentMainComponent = homeComp">
               <template #title>
                 <el-icon>
                   <home-filled/>
@@ -43,13 +43,13 @@
                 </el-icon>
                 任务
               </template>
-              <el-menu-item index="2-1">
+              <el-menu-item index="2-1" v-on:click="currentMainComponent = taskNewComp">
                 <el-icon>
                   <circle-plus-filled/>
                 </el-icon>
                 新建
               </el-menu-item>
-              <el-menu-item index="2-2">
+              <el-menu-item index="2-2" v-on:click="currentMainComponent = taskInfoComp">
                 <el-icon>
                   <info-filled/>
                 </el-icon>
@@ -60,16 +60,18 @@
         </el-scrollbar>
       </el-aside>
 
-      <el-scrollbar>
-        <el-main v-bind:is="currentMainComponent">
-        </el-main>
-      </el-scrollbar>
+      <el-main>
+        <component v-bind:is="currentMainComponent"></component>
+      </el-main>
     </el-container>
   </el-container>
 </template>
 
 <script>
 import {appName} from "@/App";
+import TaskNewTab from "@/components/TaskNewTab";
+import HomeTab from "@/components/HomeTab";
+import {markRaw} from "vue";
 
 export default {
   name: "Home",
@@ -77,11 +79,12 @@ export default {
     return {
       appName: appName,
       username: localStorage.username,
-    }
-  },
-  computed: {
-    currentMainComponent: function () {
-      return null
+
+      homeComp: markRaw(HomeTab),
+      taskNewComp: markRaw(TaskNewTab),
+      taskInfoComp: null, // TODO
+
+      currentMainComponent: markRaw(HomeTab),
     }
   },
   mounted() {
@@ -124,5 +127,9 @@ export default {
 
 html, body, #app, .el-container {
   height: 100%;
+}
+
+.el-main {
+  padding: 0 !important;
 }
 </style>
