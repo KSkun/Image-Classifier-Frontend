@@ -108,8 +108,6 @@ export default {
         }
         ElMessage.error(errorMessage)
       })
-      // TODO
-      console.log('new task keyword ' + form.keyword + ' engines ' + form.engines.toString() + ' limit ' + form.limit)
     }
   }
 }
