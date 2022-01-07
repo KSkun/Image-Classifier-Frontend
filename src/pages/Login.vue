@@ -81,9 +81,14 @@ export default {
 
             this.$router.push('/')
           }).catch(error => {
-            let errorMessage = error.response.statusText + ': ' + error.message;
-            if (error.response.data.success === false) {
-              errorMessage = error.response.data.error
+            let errorMessage
+            if (!error.response) {
+              errorMessage = 'api network error'
+            } else {
+              errorMessage = error.response.statusText + ': ' + error.message;
+              if (error.response.data.success === false) {
+                errorMessage = error.response.data.error
+              }
             }
             ElMessage.error(errorMessage)
           })
