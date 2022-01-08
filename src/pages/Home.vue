@@ -72,6 +72,7 @@ import {appName} from "@/App";
 import TaskNewTab from "@/components/TaskNewTab";
 import HomeTab from "@/components/HomeTab";
 import {markRaw} from "vue";
+import TaskListTab from "@/components/TaskListTab";
 
 export default {
   name: "Home",
@@ -82,7 +83,7 @@ export default {
 
       homeComp: markRaw(HomeTab),
       taskNewComp: markRaw(TaskNewTab),
-      taskInfoComp: null, // TODO
+      taskInfoComp: markRaw(TaskListTab),
 
       currentMainComponent: markRaw(HomeTab),
     }
