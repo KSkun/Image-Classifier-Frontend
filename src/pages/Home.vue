@@ -24,7 +24,7 @@
         </el-col>
       </el-row>
     </el-header>
-    <el-container>
+    <el-container style="height: calc(100% - 60px)">
       <el-aside width="300px" style="background-color: rgb(238, 241, 246)">
         <el-scrollbar>
           <el-menu :default-openeds="['1', '2']" default-active="1">
@@ -49,7 +49,7 @@
                 </el-icon>
                 新建
               </el-menu-item>
-              <el-menu-item index="2-2" v-on:click="currentMainComponent = taskInfoComp">
+              <el-menu-item index="2-2" v-on:click="currentMainComponent = taskListComp">
                 <el-icon>
                   <info-filled/>
                 </el-icon>
@@ -61,7 +61,10 @@
       </el-aside>
 
       <el-main>
-        <component v-bind:is="currentMainComponent"></component>
+        <component v-bind:is="currentMainComponent"
+                   v-on:info_clicked="nowTaskID = $event; currentMainComponent = taskInfoComp"
+                   v-bind:taskID="nowTaskID"
+        ></component>
       </el-main>
     </el-container>
   </el-container>
@@ -73,6 +76,7 @@ import TaskNewTab from "@/components/TaskNewTab";
 import HomeTab from "@/components/HomeTab";
 import {markRaw} from "vue";
 import TaskListTab from "@/components/TaskListTab";
+import TaskInfoTab from "@/components/TaskInfoTab";
 
 export default {
   name: "Home",
@@ -83,7 +87,10 @@ export default {
 
       homeComp: markRaw(HomeTab),
       taskNewComp: markRaw(TaskNewTab),
-      taskInfoComp: markRaw(TaskListTab),
+      taskListComp: markRaw(TaskListTab),
+      taskInfoComp: markRaw(TaskInfoTab),
+
+      nowTaskID: '',
 
       currentMainComponent: markRaw(HomeTab),
     }
@@ -120,10 +127,6 @@ export default {
   background-color: #b3c0d1;
   color: var(--el-text-color-primary);
   line-height: 60px;
-}
-
-.el-aside {
-  color: var(--el-text-color-primary);
 }
 
 html, body, #app, .el-container {

@@ -1,5 +1,5 @@
 <template>
-  <el-table style="width: 100%" height="200" :data="tableData">
+  <el-table style="width: 100%" height="100%" :data="tableData">
     <el-table-column prop="id" label="ID" width="250"></el-table-column>
     <el-table-column prop="keyword" label="关键字" width="300"></el-table-column>
     <el-table-column prop="engines" label="搜索引擎" width="200"></el-table-column>
@@ -11,9 +11,10 @@
         </el-tag>
       </template>
     </el-table-column>
-    <el-table-column fixed="right" label="操作">
-      <el-button type="primary" size="small">详情</el-button>
-<!--      <el-button type="danger" size="small">删除</el-button>-->
+    <el-table-column fixed="right" label="操作"><template #default="scope">
+      <el-button type="primary" size="small" v-on:click="this.$emit('info_clicked', scope.row.id)">详情</el-button>
+      <!--      <el-button type="danger" size="small">删除</el-button>-->
+    </template>
     </el-table-column>
   </el-table>
 </template>
@@ -77,9 +78,7 @@ export default {
       engine_map.set(engine.name, engine.display_name)
     }
 
-    console.log(_tableData)
     for (const data of _tableData) {
-      console.log(data)
       let newData = {
         id: data.id,
         keyword: data.keyword,
@@ -93,7 +92,6 @@ export default {
       if (data.spider_done && data.classifier_done) {
         newData.status = 'Done'
       }
-      console.log(newData)
       this.tableData.push(newData)
     }
   },

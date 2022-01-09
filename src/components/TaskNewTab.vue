@@ -108,6 +108,7 @@ export default {
         }
         ElMessage.error(errorMessage)
       })
+      ElMessage.success('任务已创建')
     }
   }
 }
