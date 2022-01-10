@@ -38,8 +38,8 @@
           <template #label>
             <div class="cell-item">操作</div>
           </template>
-          <el-button type="text" size="small">下载文本图像</el-button>
-          <el-button type="text" size="small">下载非文本图像</el-button>
+          <el-button type="text" size="small" v-on:click="onDownloadZip('text')">下载文本图像</el-button>
+          <el-button type="text" size="small" v-on:click="onDownloadZip('nontext')">下载非文本图像</el-button>
         </el-descriptions-item>
       </el-descriptions>
 
@@ -183,6 +183,29 @@ export default {
         default:
           image.class = 'Pending';
       }
+    }
+  },
+  methods: {
+    onDownloadZip: function (klass) {
+      axios.get(urlPrefix + '/api/task/' + this.taskID + '/zip/' + klass, {
+        headers: {'Authorization': 'Bearer ' + localStorage.token}
+      }).then(response => {
+        if (!response.data.success) {
+          ElMessage.error(response.statusText + ': ' + response.data.error)
+        }
+        window.open(response.data.data.file, '_blank')
+      }).catch(error => {
+        let errorMessage
+        if (!error.response) {
+          errorMessage = error.message
+        } else {
+          errorMessage = error.response.statusText + ': ' + error.message
+          if (error.response.data.success === false) {
+            errorMessage = error.response.data.error
+          }
+        }
+        ElMessage.error(errorMessage)
+      })
     }
   }
 }
