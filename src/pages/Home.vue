@@ -24,7 +24,7 @@
         </el-col>
       </el-row>
     </el-header>
-    <el-container style="height: calc(100% - 60px)">
+    <el-container style="height: calc(100% - 100px)">
       <el-aside width="300px" style="background-color: rgb(238, 241, 246)">
         <el-scrollbar>
           <el-menu :default-openeds="['1', '2']" default-active="1">
