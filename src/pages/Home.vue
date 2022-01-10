@@ -67,6 +67,10 @@
         ></component>
       </el-main>
     </el-container>
+    <el-footer>
+      Copyright &copy; KSkun, 2021. &nbsp;
+      <component v-bind:is="beianComp"></component>
+    </el-footer>
   </el-container>
 </template>
 
@@ -77,6 +81,7 @@ import HomeTab from "@/components/HomeTab";
 import {markRaw} from "vue";
 import TaskListTab from "@/components/TaskListTab";
 import TaskInfoTab from "@/components/TaskInfoTab";
+import Beian from "@/components/Beian"
 
 export default {
   name: "Home",
@@ -89,6 +94,7 @@ export default {
       taskNewComp: markRaw(TaskNewTab),
       taskListComp: markRaw(TaskListTab),
       taskInfoComp: markRaw(TaskInfoTab),
+      beianComp: markRaw(Beian),
 
       nowTaskID: '',
 
@@ -135,5 +141,13 @@ html, body, #app, .el-container {
 
 .el-main {
   padding: 0 !important;
+}
+
+.el-footer {
+  display: flex;
+  align-items: center;
+  background-color: #b3c0d1;
+  height: 40px !important;
+  font-size: small;
 }
 </style>
