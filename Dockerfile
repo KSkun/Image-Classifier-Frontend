@@ -22,3 +22,4 @@ FROM nginx:1.21.5-alpine
 # copy frontend build to nginx image
 COPY --from=build /app/dist /app/frontend
 COPY ./docker/classifier.conf /etc/nginx/conf.d/classifier.conf
+RUN rm /etc/nginx/conf.d/default.conf
