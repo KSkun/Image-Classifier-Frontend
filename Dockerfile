@@ -10,7 +10,7 @@ RUN apk --upgrade --no-cache add python
 # RUN npm config set registry https://registry.npm.taobao.org/
 
 # or use a local proxy server
-RUN npm config set proxy http://172.24.144.1:23334
+RUN npm config set proxy http://172.29.224.1:23334
 
 RUN npm install
 
