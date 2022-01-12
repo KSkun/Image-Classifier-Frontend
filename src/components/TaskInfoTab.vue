@@ -1,6 +1,7 @@
 <template>
   <el-scrollbar style="height: 100%">
     <div style="margin: 50px">
+      <!-- task basic info -->
       <el-descriptions class="margin-top" :column="4" border>
         <el-descriptions-item width="10%">
           <template #label>
@@ -43,6 +44,7 @@
         </el-descriptions-item>
       </el-descriptions>
 
+      <!-- task images -->
       <el-row style="margin-top: 20px" gutter="20"
               v-for="i in Math.ceil(images.length / 4)" v-bind:key="i">
         <el-col :span="6"
@@ -75,7 +77,7 @@
 
 <script>
 import axios from "axios";
-import {urlPrefix, resPrefix} from "@/App";
+import {urlPrefix} from "@/App";
 import {ElMessage} from "element-plus";
 
 export default {
@@ -84,11 +86,11 @@ export default {
   data() {
     return {
       task: {},
-      images: [],
-      resPrefix: resPrefix
+      images: []
     }
   },
   async created() {
+    // get task info
     let _task
     await axios.get(urlPrefix + '/api/task/' + this.taskID, {
       headers: {
@@ -112,6 +114,7 @@ export default {
       ElMessage.error(errorMessage)
     })
 
+    // get engines list to show engine's display name
     let _engines
     await axios.get(urlPrefix + '/api/task/engines').then(response => {
       if (!response.data.success) {
@@ -135,6 +138,7 @@ export default {
       engine_map.set(engine.name, engine.display_name)
     }
 
+    // make display task info
     this.task = {
       id: this.taskID,
       keyword: _task.keyword,
@@ -151,6 +155,7 @@ export default {
       this.task.status = 'Done'
     }
 
+    // get images related to the task
     await axios.get(urlPrefix + '/api/image/list', {
       params: {'task': this.taskID},
       headers: {'Authorization': 'Bearer ' + localStorage.token}
@@ -187,6 +192,7 @@ export default {
   },
   methods: {
     onDownloadZip: function (klass) {
+      // get download url of zip pack
       axios.get(urlPrefix + '/api/task/' + this.taskID + '/zip/' + klass, {
         headers: {'Authorization': 'Bearer ' + localStorage.token}
       }).then(response => {

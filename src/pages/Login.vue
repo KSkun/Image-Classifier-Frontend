@@ -47,6 +47,8 @@ export default {
   mounted() {
     document.title = '登录 - ' + appName
 
+    // validate local token
+    // if logged in, jump to home page
     if (parseFloat(localStorage.tokenExpire) * 1000 < Date.now()) {
       localStorage.removeItem('token')
       localStorage.removeItem('tokenExpire')
@@ -59,6 +61,7 @@ export default {
   },
   methods: {
     onSubmit: function (formName) {
+      // get token from backend
       const form = this.$refs[formName];
       form.validate(valid => {
         if (valid) {

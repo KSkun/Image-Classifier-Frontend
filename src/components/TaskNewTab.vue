@@ -49,6 +49,7 @@ export default {
     }
   },
   async created() {
+    // get available engine list
     await axios.get(urlPrefix + '/api/task/engines').then(response => {
       if (!response.data.success) {
         ElMessage.error(response.statusText + ': ' + response.data.error)
@@ -69,6 +70,7 @@ export default {
   },
   methods: {
     onSubmit() {
+      // validate local token
       if (parseFloat(localStorage.tokenExpire) * 1000 < Date.now()) {
         localStorage.removeItem('token')
         localStorage.removeItem('tokenExpire')
@@ -82,6 +84,7 @@ export default {
 
       let token = localStorage.token
 
+      // create task
       let form = this.$refs['new_task_form'].model
       axios.post(urlPrefix + '/api/task', {
         keyword: form.keyword,

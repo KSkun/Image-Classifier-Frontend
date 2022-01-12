@@ -13,7 +13,6 @@
     </el-table-column>
     <el-table-column fixed="right" label="操作"><template #default="scope">
       <el-button type="primary" size="small" v-on:click="this.$emit('info_clicked', scope.row.id)">详情</el-button>
-      <!--      <el-button type="danger" size="small">删除</el-button>-->
     </template>
     </el-table-column>
   </el-table>
@@ -32,6 +31,7 @@ export default {
     }
   },
   async created() {
+    // get task list
     let _tableData
     await axios.get(urlPrefix + '/api/task/list', {
       headers: {
@@ -55,6 +55,7 @@ export default {
       ElMessage.error(errorMessage)
     })
 
+    // get engines list to show engine's display name
     let _engines
     await axios.get(urlPrefix + '/api/task/engines').then(response => {
       if (!response.data.success) {
@@ -78,6 +79,7 @@ export default {
       engine_map.set(engine.name, engine.display_name)
     }
 
+    // make display task info
     for (const data of _tableData) {
       let newData = {
         id: data.id,

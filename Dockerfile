@@ -5,8 +5,13 @@ COPY . .
 
 # install requirements
 RUN apk --upgrade --no-cache add python
+
+# enable taobao registry to accelerate
 # RUN npm config set registry https://registry.npm.taobao.org/
+
+# or use a local proxy server
 RUN npm config set proxy http://172.24.144.1:23334
+
 RUN npm install
 
 # build

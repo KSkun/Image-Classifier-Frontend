@@ -1,5 +1,6 @@
 <template>
   <el-container>
+    <!-- header: title, user info -->
     <el-header>
       <el-row>
         <el-col :span="12"><b>{{ appName + ' by KSkun' }}</b></el-col>
@@ -25,6 +26,7 @@
       </el-row>
     </el-header>
     <el-container style="height: calc(100% - 100px)">
+      <!-- sidebar: menu -->
       <el-aside width="300px" style="background-color: rgb(238, 241, 246)">
         <el-scrollbar>
           <el-menu :default-openeds="['1', '2']" default-active="1">
@@ -60,6 +62,7 @@
         </el-scrollbar>
       </el-aside>
 
+      <!-- main: tab pages -->
       <el-main>
         <component v-bind:is="currentMainComponent"
                    v-on:info_clicked="nowTaskID = $event; currentMainComponent = taskInfoComp"
@@ -67,6 +70,7 @@
         ></component>
       </el-main>
     </el-container>
+    <!-- footer: copyright, beian -->
     <el-footer>
       Copyright &copy; KSkun, 2021. &nbsp;
       <component v-bind:is="beianComp"></component>
@@ -104,6 +108,7 @@ export default {
   mounted() {
     document.title = appName
 
+    // validate local token
     if (parseFloat(localStorage.tokenExpire) * 1000 < Date.now()) {
       localStorage.removeItem('token')
       localStorage.removeItem('tokenExpire')
@@ -117,6 +122,7 @@ export default {
   },
   methods: {
     onLogout() {
+      // remove token
       localStorage.removeItem('token')
       localStorage.removeItem('tokenExpire')
       localStorage.removeItem('username')
